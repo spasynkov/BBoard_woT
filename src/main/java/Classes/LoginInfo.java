@@ -13,6 +13,10 @@ public class LoginInfo {
     private String codeErr;
     private String messageErr;
 
+    public LoginInfo() {
+
+    }
+
     public String getStatus() {
         return status;
     }
@@ -25,6 +29,27 @@ public class LoginInfo {
     public String getNickname() {
         return nickname;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
+    }
+
+    public void setExpires_at(Date expires_at) {
+        this.expires_at = expires_at;
+    }
+
+    public void setAccount_id(long account_id) {
+        this.account_id = account_id;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public String getAccess_token() {
         return access_token;
     }
