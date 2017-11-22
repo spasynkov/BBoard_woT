@@ -30,16 +30,6 @@ public class StartServlet extends HttpServlet {
 //        out.println("Hello Word!!!");
 
 
-        Iterator<Map.Entry<String,String>> iterator =request.getParameterMap().entrySet().iterator();
-        while (iterator.hasNext())
-        {
-            //получение «пары» элементов
-            Map.Entry<String, String> pair = iterator.next();
-            String key = pair.getKey();            //ключ
-            String value = pair.getValue();        //значение
-            System.out.println(key + ":" + value);
-        }
-
 
         response.setContentType("text/html");
 //        RequestDispatcher dispatcher = request.getRequestDispatcher("hello.jsp");
