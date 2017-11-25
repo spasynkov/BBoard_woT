@@ -1,6 +1,7 @@
 package servlets;
 
 import Classes.CookiesProcessing;
+import Classes.Database;
 import Classes.LoginInfo;
 
 import javax.servlet.RequestDispatcher;
@@ -9,7 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static Classes.CookiesProcessing.getCookie;
@@ -73,6 +76,12 @@ public class BulletinBoardServlet extends HttpServlet {
             loginInfo.setExpires_at(new Date(Long.parseLong(expiresAt) * 1000));
 
             request.setAttribute("LoginInfo", loginInfo);
+        }
+        //отображаем все актуальные объявления
+        ArrayList<String > alActAds =Database.getActualAd();
+        System.out.println("alActAds.size:"+alActAds.size());
+        if (alActAds.size()>0) {
+            request.setAttribute("AdActual", alActAds);
         }
 
         response.setContentType("text/html");
