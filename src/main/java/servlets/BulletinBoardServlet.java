@@ -79,7 +79,6 @@ public class BulletinBoardServlet extends HttpServlet {
         }
         //отображаем все актуальные объявления
         ArrayList<String > alActAds =Database.getActualAd();
-        System.out.println("alActAds.size:"+alActAds.size());
         if (alActAds.size()>0) {
             request.setAttribute("AdActual", alActAds);
         }
@@ -88,7 +87,6 @@ public class BulletinBoardServlet extends HttpServlet {
 //        RequestDispatcher dispatcher = request.getRequestDispatcher("hello.jsp");
         RequestDispatcher dispatcher = request.getRequestDispatcher("BulletinBoard.jsp");
         if (dispatcher != null) {
-            System.out.println("dispatcher -> redirect");
             dispatcher.forward(request, response);
         }
     }

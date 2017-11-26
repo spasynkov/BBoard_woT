@@ -12,16 +12,23 @@ public class Database {
     private static Connection conn;
 
     static {
+        props.setProperty("user", "postgres");
+        props.setProperty("password", "123");
+        props.setProperty("charSet ","UTF8");
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         initConn();
     }
 
     public static boolean initConn() {
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "123");
-        try {
-            if (conn == null || conn.isClosed())
-                conn = DriverManager.getConnection(url, props);
 
+        try {
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection(url, props);
+            }
         } catch (SQLException e) {
             return false;
         }
@@ -54,16 +61,22 @@ public class Database {
             return result;
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (NullPointerException e1){
+        } catch (NullPointerException e1) {
             e1.printStackTrace();
         }
         return result;
     }
 
-
-    public static void main(String[] args) throws SQLException {
-        for (String s : getActualAd()) {
-            System.out.println(s);
-        }
+    public static void addNewAc(int accId, int duration, String text, String nickname) throws SQLException{
+        String sql = "" +
+                "INSERT INTO bboard (account_id,  duration, text, tags, nickname) " +
+                "VALUES ("+accId+","+duration+",'"+text+"',NULL ,'"+nickname+"')" +
+                "";
+        System.out.println("Sql: "+sql);
+        getConn().createStatement().executeUpdate(sql);
     }
+
+//    public static void main(String[] args) throws SQLException {
+//
+//    }
 }

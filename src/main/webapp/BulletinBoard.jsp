@@ -1,5 +1,4 @@
 <%@ page import="Classes.LoginInfo" %>
-<%@ page import="Classes.Database" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -9,13 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
 
-    <title>Страница входа</title>
+    <title>Доска объявлений</title>
 </head>
 
 <body>
 <%
-    if (request.getAttribute("LoginInfo") != null) {
+//    if (request.getAttribute("LoginInfo") != null) {
         LoginInfo loginInfo = (LoginInfo) request.getAttribute("LoginInfo");
+        if (loginInfo!=null){
         if (loginInfo.getStatus().equalsIgnoreCase("ok")) {
 
             out.println(loginInfo.getNickname());
@@ -25,11 +25,12 @@
         } else {
         }
 
-    } else {
-        out.println("<p style=\"color: red;\">Возникла какая-то ошибка. Извините</p>");
-        out.println(request.getAttribute("LoginInfo"));
-        out.println("");
     }
+//    else {
+//        out.println("<p style=\"color: red;\">Возникла какая-то ошибка. Извините</p>");
+//        out.println(request.getAttribute("LoginInfo"));
+//        out.println("");
+//    }
 %>
 
 
@@ -42,14 +43,15 @@
             <option value="45 min">45</option>
         </select>
 
-    <p>Текст объявления<textarea name="AdText" cols="225" rows="4" maxlength="225"></textarea></p>
+    <p>Текст объявления
+    <textarea name="AdText" cols="225" rows="4" maxlength="225"></textarea></p>
     <p><input type="reset" value="Очистить"></p>
     </p>
     <p><input type="submit" value="Отправить"></p>
 </form>
 
 <table border="1">
-    <caption>Таблица размеров обуви</caption>
+    <caption>Текущие объявления</caption>
     <tr>
         <th>Автор</th>
         <th>Время создания</th>
@@ -59,10 +61,17 @@
     <tr>
         <% if (request.getAttribute("AdActual") != null) {
             ArrayList<String> adList = (ArrayList<String>) request.getAttribute("AdActual");
-            for (String ad : adList) {
-
-                out.println("<td>" + ad + "</td>");
+            int inc = 0;
+            out.println("<tr>");
+            for (int i = 0; i < adList.size(); i++) {
+                inc++;
+                out.println("<td>" + adList.get(i) + "</td>");
+                if (inc%4==0 && i != 0)
+                    out.println("</tr><tr>");
             }
+            out.println("</tr>");
+        }else {
+            out.println("<tr><td>Доска пока пуста...</td><td></td><td></td><td></td></tr>");
         }
         %>
     </tr>
