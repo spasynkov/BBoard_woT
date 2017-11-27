@@ -39,11 +39,9 @@ public class MakeAdServlet extends HttpServlet {
 
 
             duration = req.getIntHeader("duration_time");
-            textAd = new String(req.getParameter("AdText").getBytes(), Charset.forName("UTF-8"));
-//            textAd = req.getParameter("AdText");
-            System.out.println("textAd: "+textAd);
-            // FIXME: 26.11.2017 РАЗОБРАТЬСЯ С КОДИРОВКОЙ
-            
+            textAd = new String(req.getParameter("AdText").getBytes("ISO-8859-1"), Charset.forName("UTF-8"));
+
+
             
             // FIXME: 26.11.2017 добавить передачу тегов в будущем
             nickName = getCookie(req, CookiesProcessing.CookieName.WOT_USERNAME);

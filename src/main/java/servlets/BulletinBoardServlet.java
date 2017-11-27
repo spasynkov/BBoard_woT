@@ -29,6 +29,7 @@ public class BulletinBoardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         if (!request.getParameterMap().isEmpty()) {     // если есть параметры
             String status = request.getParameter("status");
             if (status != null && !status.isEmpty()) { //и статус не пуст

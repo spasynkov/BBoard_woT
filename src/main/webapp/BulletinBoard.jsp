@@ -1,6 +1,7 @@
 <%@ page import="Classes.LoginInfo" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +14,9 @@
 
 <body>
 <%
-//    if (request.getAttribute("LoginInfo") != null) {
-        LoginInfo loginInfo = (LoginInfo) request.getAttribute("LoginInfo");
-        if (loginInfo!=null){
+    //    if (request.getAttribute("LoginInfo") != null) {
+    LoginInfo loginInfo = (LoginInfo) request.getAttribute("LoginInfo");
+    if (loginInfo != null) {
         if (loginInfo.getStatus().equalsIgnoreCase("ok")) {
 
             out.println(loginInfo.getNickname());
@@ -44,9 +45,10 @@
         </select>
 
     <p>Текст объявления
-    <textarea name="AdText" cols="225" rows="4" maxlength="225"></textarea></p>
-    <p><input type="reset" value="Очистить"></p>
+        <textarea name="AdText" cols="225" rows="4" maxlength="225"></textarea>
     </p>
+    <p><input type="reset" value="Очистить"></p>
+
     <p><input type="submit" value="Отправить"></p>
 </form>
 
@@ -66,11 +68,11 @@
             for (int i = 0; i < adList.size(); i++) {
                 inc++;
                 out.println("<td>" + adList.get(i) + "</td>");
-                if (inc%4==0 && i != 0)
+                if (inc % 4 == 0 && i != 0)
                     out.println("</tr><tr>");
             }
             out.println("</tr>");
-        }else {
+        } else {
             out.println("<tr><td>Доска пока пуста...</td><td></td><td></td><td></td></tr>");
         }
         %>
