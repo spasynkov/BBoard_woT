@@ -2,6 +2,11 @@ package Classes;
 
 import javax.validation.constraints.Null;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -14,7 +19,7 @@ public class Database {
     static {
         props.setProperty("user", "postgres");
         props.setProperty("password", "123");
-        props.setProperty("charSet ","UTF8");
+        props.setProperty("charSet ", "UTF8");
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -44,7 +49,7 @@ public class Database {
     public static ArrayList<String> getActualAd() {
         ArrayList<String> result = new ArrayList<String>();
         String sql =
-                "select nickname,to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),text,tags " +
+                "select account_id,nickname,to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),text,tags " +
                         "from bboard " +
                         "order by cr_date";
         try {
@@ -57,6 +62,7 @@ public class Database {
                 result.add(rs.getString(2));
                 result.add(rs.getString(3));
                 result.add(rs.getString(4));
+                result.add(rs.getString(5));
             }
             return result;
         } catch (SQLException e) {
@@ -67,16 +73,37 @@ public class Database {
         return result;
     }
 
-    public static void addNewAc(int accId, int duration, String text, String nickname) throws SQLException{
+    public static void addNewAc(int accId, int duration, String text, String nickname) throws SQLException {
         String sql = "" +
                 "INSERT INTO bboard (account_id,  duration, text, tags, nickname) " +
-                "VALUES ("+accId+","+duration+",'"+text+"',NULL ,'"+nickname+"')" +
+                "VALUES (" + accId + "," + duration + ",'" + text + "',NULL ,'" + nickname + "')" +
                 "";
-        System.out.println("Sql: "+sql);
+        System.out.println("Sql: " + sql);
         getConn().createStatement().executeUpdate(sql);
     }
 
-//    public static void main(String[] args) throws SQLException {
-//
-//    }
+    public static void main(String[] args) throws SQLException {
+
+        String sql =
+                "select to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),cr_date,now() " +
+                        "from bboard " +
+                        "order by cr_date";
+
+        ResultSet rs = getConn()
+                .createStatement()
+                .executeQuery(sql);
+        long rightNow = System.currentTimeMillis();
+        while (rs.next()) {
+//            System.out.print(rs.getString(1));
+//            System.out.print("\t| ");
+            System.out.print(rs.getString(2));
+            System.out.print("\t| ");
+            System.out.print(rightNow);
+            System.out.print("\t| ");
+            int dif = (int) (rightNow - rs.getTime(2).getTime())/1000/60; //в секунды
+            System.out.print(dif);
+
+            System.out.println();
+        }
+    }
 }
