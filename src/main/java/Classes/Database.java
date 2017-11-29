@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 
 public class Database {
@@ -48,8 +49,10 @@ public class Database {
 
     public static ArrayList<String> getActualAd() {
         ArrayList<String> result = new ArrayList<String>();
+        int dif_min;
+        String stringTime = "";
         String sql =
-                "select account_id,nickname,to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),text,tags " +
+                "select account_id,nickname,cr_date,text,tags " +
                         "from bboard " +
                         "order by cr_date";
         try {
@@ -60,7 +63,18 @@ public class Database {
             while (rs.next()) {
                 result.add(rs.getString(1));
                 result.add(rs.getString(2));
-                result.add(rs.getString(3));
+                //----------------------------------------------------------------------------------
+                //3 поле - дата создания, которую хотим представить в виде часов и минут назад.
+                dif_min = (int) (System.currentTimeMillis() - rs.getTimestamp(3).getTime()) / 1000 / 60;
+                if (dif_min > 60)
+                    result.add((dif_min / 60) + " часов " + (dif_min % 60) + " минут назад");
+                else {
+
+                    stringTime =
+                }
+                result.add(dif_min + " минут назад");
+                result.add(stringTime);
+                //----------------------------------------------------------------------------------
                 result.add(rs.getString(4));
                 result.add(rs.getString(5));
             }
@@ -92,18 +106,18 @@ public class Database {
         ResultSet rs = getConn()
                 .createStatement()
                 .executeQuery(sql);
-        long rightNow = System.currentTimeMillis();
         while (rs.next()) {
-//            System.out.print(rs.getString(1));
-//            System.out.print("\t| ");
-            System.out.print(rs.getString(2));
-            System.out.print("\t| ");
-            System.out.print(rightNow);
-            System.out.print("\t| ");
-            int dif = (int) (rightNow - rs.getTime(2).getTime())/1000/60; //в секунды
-            System.out.print(dif);
+            int rightNow = (int) System.currentTimeMillis();
+            int dif_min = (int) (rightNow - rs.getTimestamp(2).getTime()) / 1000 / 60; //min
+//            System.out.println(new Date(dif_min).getTime());
+            if (dif_min > 60) {
+                int hh = (int) (dif_min / 60);
+                dif_min = (dif_min % 60);
+                System.out.println(hh + " hh " + dif_min + "min");
+            } else {
+                System.out.println(dif_min + " минут назад");
+            }
 
-            System.out.println();
         }
     }
 }
