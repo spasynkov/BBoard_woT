@@ -8,8 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class Database {
 
@@ -49,10 +49,8 @@ public class Database {
 
     public static ArrayList<String> getActualAd() {
         ArrayList<String> result = new ArrayList<String>();
-        int dif_min;
-        String stringTime = "";
         String sql =
-                "select account_id,nickname,cr_date,text,tags " +
+                "select account_id,nickname,to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),text,tags " +
                         "from bboard " +
                         "order by cr_date";
         try {
@@ -63,18 +61,7 @@ public class Database {
             while (rs.next()) {
                 result.add(rs.getString(1));
                 result.add(rs.getString(2));
-                //----------------------------------------------------------------------------------
-                //3 поле - дата создания, которую хотим представить в виде часов и минут назад.
-                dif_min = (int) (System.currentTimeMillis() - rs.getTimestamp(3).getTime()) / 1000 / 60;
-                if (dif_min > 60)
-                    result.add((dif_min / 60) + " часов " + (dif_min % 60) + " минут назад");
-                else {
-
-                    stringTime =
-                }
-                result.add(dif_min + " минут назад");
-                result.add(stringTime);
-                //----------------------------------------------------------------------------------
+                result.add(rs.getString(3));
                 result.add(rs.getString(4));
                 result.add(rs.getString(5));
             }
@@ -96,6 +83,12 @@ public class Database {
         getConn().createStatement().executeUpdate(sql);
     }
 
+    public static long getDateDiff(long timeUpdate, long timeNow, TimeUnit timeUnit)
+    {
+        long diffInMillies = Math.abs(timeNow- timeUpdate);
+        return timeUnit.convert(diffInMillies, TimeUnit.SECONDS);
+    }
+
     public static void main(String[] args) throws SQLException {
 
         String sql =
@@ -106,18 +99,17 @@ public class Database {
         ResultSet rs = getConn()
                 .createStatement()
                 .executeQuery(sql);
+        long rightNow = System.currentTimeMillis();
         while (rs.next()) {
-            int rightNow = (int) System.currentTimeMillis();
-            int dif_min = (int) (rightNow - rs.getTimestamp(2).getTime()) / 1000 / 60; //min
-//            System.out.println(new Date(dif_min).getTime());
-            if (dif_min > 60) {
-                int hh = (int) (dif_min / 60);
-                dif_min = (dif_min % 60);
-                System.out.println(hh + " hh " + dif_min + "min");
-            } else {
-                System.out.println(dif_min + " минут назад");
-            }
+//            System.out.print(rs.getString(1));
+//            System.out.print("\t| ");
+            System.out.print(rs.getString(2));
+            System.out.print("\t| ");
+            long dif = getDateDiff(rightNow, rs.getDate(2).getTime(), TimeUnit.DAYS);
 
+            System.out.print(dif);
+
+            System.out.println();
         }
     }
 }

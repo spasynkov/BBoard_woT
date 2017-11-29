@@ -243,7 +243,7 @@
                     }
 //                    out.println("</tr>");
                 } else {
-                    out.println("<tr><td>Доска пока пуста...</td><td></td><td></td><td></td></tr>");
+                    out.println("Доска пока пуста...");
                 }
                 %>
 
