@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CookiesProcessing {
+
+
     public static String getCookie(HttpServletRequest req, CookieName cookieName) {
         Cookie[] cookies = req.getCookies();
         for (Cookie c : cookies) {
@@ -47,4 +49,6 @@ public class CookiesProcessing {
         WOT_TOKEN,
         WOT_EXPIRES
     }
+
+
 }

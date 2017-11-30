@@ -47,10 +47,23 @@ public class Database {
         return conn;
     }
 
-    public static ArrayList<String> getActualAd() {
-        ArrayList<String> result = new ArrayList<String>();
+    public static String getTimeString(long time) {
         int dif_min;
         String stringTime = "";
+        dif_min = (int) (System.currentTimeMillis() - time) / 1000 / 60;
+        //https://javatalks.ru/topics/39523
+        if (dif_min == 0) stringTime = "только что";
+        else if (dif_min > 0 && dif_min < 60) stringTime = dif_min + " мин. назад";
+        else if (dif_min == 60) stringTime = "час назад";
+        else if (dif_min > 60) stringTime = "более часа назад";
+
+//        if (dif_min > 60) stringTime = (dif_min / 60) + " часов " + (dif_min % 60) + " минут назад";
+//        else stringTime = (dif_min + " минут назад");
+        return stringTime;
+    }
+
+    public static ArrayList<String> getActualAd() {
+        ArrayList<String> result = new ArrayList<String>();
         String sql =
                 "select account_id,nickname,cr_date,text,tags " +
                         "from bboard " +
@@ -63,26 +76,13 @@ public class Database {
             while (rs.next()) {
                 result.add(rs.getString(1));
                 result.add(rs.getString(2));
-                //----------------------------------------------------------------------------------
-                //3 поле - дата создания, которую хотим представить в виде часов и минут назад.
-                dif_min = (int) (System.currentTimeMillis() - rs.getTimestamp(3).getTime()) / 1000 / 60;
-                if (dif_min > 60)
-                    result.add((dif_min / 60) + " часов " + (dif_min % 60) + " минут назад");
-                else {
-
-                    stringTime =
-                }
-                result.add(dif_min + " минут назад");
-                result.add(stringTime);
-                //----------------------------------------------------------------------------------
+                result.add(getTimeString(rs.getTimestamp(3).getTime()));
                 result.add(rs.getString(4));
                 result.add(rs.getString(5));
             }
             return result;
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (NullPointerException e1) {
-            e1.printStackTrace();
         }
         return result;
     }
@@ -92,7 +92,7 @@ public class Database {
                 "INSERT INTO bboard (account_id,  duration, text, tags, nickname) " +
                 "VALUES (" + accId + "," + duration + ",'" + text + "',NULL ,'" + nickname + "')" +
                 "";
-        System.out.println("Sql: " + sql);
+//        System.out.println("Sql: " + sql);
         getConn().createStatement().executeUpdate(sql);
     }
 
