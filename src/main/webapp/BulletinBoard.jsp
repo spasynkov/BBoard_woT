@@ -101,7 +101,7 @@
                     <p>$$$TIME_AGO</p>
                 </div>
                 <div class="b-button_right">
-                    <span id="respond" onclick = "doAction('respond!')"  class="b-button-txt">ОТКЛИК</span>
+                    <span id="respond" onclick = "doAction(this)"  class="b-button-txt">ОТКЛИК</span>
                 </div>
             </div>
 
