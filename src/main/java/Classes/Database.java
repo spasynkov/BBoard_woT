@@ -8,8 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 public class Database {
 
@@ -47,10 +47,25 @@ public class Database {
         return conn;
     }
 
+    public static String getTimeString(long time) {
+        int dif_min;
+        String stringTime = "";
+        dif_min = (int) (System.currentTimeMillis() - time) / 1000 / 60;
+        //https://javatalks.ru/topics/39523
+        if (dif_min == 0) stringTime = "только что";
+        else if (dif_min > 0 && dif_min < 60) stringTime = dif_min + " мин. назад";
+        else if (dif_min == 60) stringTime = "час назад";
+        else if (dif_min > 60) stringTime = "более часа назад";
+
+//        if (dif_min > 60) stringTime = (dif_min / 60) + " часов " + (dif_min % 60) + " минут назад";
+//        else stringTime = (dif_min + " минут назад");
+        return stringTime;
+    }
+
     public static ArrayList<String> getActualAd() {
         ArrayList<String> result = new ArrayList<String>();
         String sql =
-                "select account_id,nickname,to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),text,tags " +
+                "select account_id,nickname,cr_date,text,tags " +
                         "from bboard " +
                         "order by cr_date";
         try {
@@ -61,15 +76,13 @@ public class Database {
             while (rs.next()) {
                 result.add(rs.getString(1));
                 result.add(rs.getString(2));
-                result.add(rs.getString(3));
+                result.add(getTimeString(rs.getTimestamp(3).getTime()));
                 result.add(rs.getString(4));
                 result.add(rs.getString(5));
             }
             return result;
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (NullPointerException e1) {
-            e1.printStackTrace();
         }
         return result;
     }
@@ -79,14 +92,8 @@ public class Database {
                 "INSERT INTO bboard (account_id,  duration, text, tags, nickname) " +
                 "VALUES (" + accId + "," + duration + ",'" + text + "',NULL ,'" + nickname + "')" +
                 "";
-        System.out.println("Sql: " + sql);
+//        System.out.println("Sql: " + sql);
         getConn().createStatement().executeUpdate(sql);
-    }
-
-    public static long getDateDiff(long timeUpdate, long timeNow, TimeUnit timeUnit)
-    {
-        long diffInMillies = Math.abs(timeNow- timeUpdate);
-        return timeUnit.convert(diffInMillies, TimeUnit.SECONDS);
     }
 
     public static void main(String[] args) throws SQLException {
@@ -99,17 +106,18 @@ public class Database {
         ResultSet rs = getConn()
                 .createStatement()
                 .executeQuery(sql);
-        long rightNow = System.currentTimeMillis();
         while (rs.next()) {
-//            System.out.print(rs.getString(1));
-//            System.out.print("\t| ");
-            System.out.print(rs.getString(2));
-            System.out.print("\t| ");
-            long dif = getDateDiff(rightNow, rs.getDate(2).getTime(), TimeUnit.DAYS);
+            int rightNow = (int) System.currentTimeMillis();
+            int dif_min = (int) (rightNow - rs.getTimestamp(2).getTime()) / 1000 / 60; //min
+//            System.out.println(new Date(dif_min).getTime());
+            if (dif_min > 60) {
+                int hh = (int) (dif_min / 60);
+                dif_min = (dif_min % 60);
+                System.out.println(hh + " hh " + dif_min + "min");
+            } else {
+                System.out.println(dif_min + " минут назад");
+            }
 
-            System.out.print(dif);
-
-            System.out.println();
         }
     }
 }
