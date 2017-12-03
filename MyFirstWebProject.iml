@@ -22,5 +22,7 @@
     <orderEntry type="library" name="Maven: javaee:javaee-api:5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-web-api:6.0" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.1.4.jre7" level="project" />
+    <orderEntry type="library" name="Maven: org.glassfish:javax.json:1.1.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.json:javax.json-api:1.1.2" level="project" />
   </component>
 </module>

@@ -1,6 +1,12 @@
 package Classes;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonString;
 import javax.validation.constraints.Null;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -65,7 +71,7 @@ public class Database {
     public static ArrayList<String> getActualAd() {
         ArrayList<String> result = new ArrayList<String>();
         String sql =
-                "select account_id,nickname,cr_date,text,tags " +
+                "select account_id,nickname,cr_date,text,tags,id " +
                         "from bboard " +
                         "order by cr_date";
         try {
@@ -79,6 +85,7 @@ public class Database {
                 result.add(getTimeString(rs.getTimestamp(3).getTime()));
                 result.add(rs.getString(4));
                 result.add(rs.getString(5));
+                result.add(rs.getString(6));
             }
             return result;
         } catch (SQLException e) {
@@ -96,28 +103,69 @@ public class Database {
         getConn().createStatement().executeUpdate(sql);
     }
 
-    public static void main(String[] args) throws SQLException {
+
+    /* true - уже есть отклик
+    * false - еще нет отклика*/
+    public static boolean alreadyResponded(int adNum, int accountId) {
+        String sql = "" +
+                "select count(1) " +
+                "from bboard a1,responds a2 " +
+                "where a1.responds_arr = a2.collect_id " +
+                "and a1.id = " + adNum +
+                " and a2.user_id = " + accountId;// FIXME: 02.12.2017 При добавлении отклика в будущем надо учитывать актуальность объявы
+        try {
+            ResultSet rs = getConn()
+                    .createStatement()
+                    .executeQuery(sql);
+            int cntResponds = rs.getInt(1);
+            if (cntResponds == 0)
+                return false;
+            else return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void addRespond(int adNum, int accountId, String username, int battleCnt, double winRate, int globalRate) throws SQLException {
+        if (alreadyResponded(adNum, accountId)) return;
 
         String sql =
-                "select to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),cr_date,now() " +
-                        "from bboard " +
-                        "order by cr_date";
+                "INSERT INTO responds(collect_id, username, user_id, battle_count, win_rate, own_rate)" +
+                        "VALUES (" + adNum + ",'" + username + "'," + accountId + "," + battleCnt + "," + winRate + "," + globalRate + ")";
+//        System.out.println("Sql: " + sql);
+        getConn().createStatement().executeUpdate(sql);
+    }
 
-        ResultSet rs = getConn()
-                .createStatement()
-                .executeQuery(sql);
-        while (rs.next()) {
-            int rightNow = (int) System.currentTimeMillis();
-            int dif_min = (int) (rightNow - rs.getTimestamp(2).getTime()) / 1000 / 60; //min
-//            System.out.println(new Date(dif_min).getTime());
-            if (dif_min > 60) {
-                int hh = (int) (dif_min / 60);
-                dif_min = (dif_min % 60);
-                System.out.println(hh + " hh " + dif_min + "min");
-            } else {
-                System.out.println(dif_min + " минут назад");
-            }
+//    public static void main(String[] args) throws SQLException {
+//
+//        String sql =
+//                "select to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),cr_date,now() " +
+//                        "from bboard " +
+//                        "order by cr_date";
+//
+//        ResultSet rs = getConn()
+//                .createStatement()
+//                .executeQuery(sql);
+//        while (rs.next()) {
+//            int rightNow = (int) System.currentTimeMillis();
+//            int dif_min = (int) (rightNow - rs.getTimestamp(2).getTime()) / 1000 / 60; //min
+////            System.out.println(new Date(dif_min).getTime());
+//            if (dif_min > 60) {
+//                int hh = (int) (dif_min / 60);
+//                dif_min = (dif_min % 60);
+//                System.out.println(hh + " hh " + dif_min + "min");
+//            } else {
+//                System.out.println(dif_min + " минут назад");
+//            }
+//
+//        }
+//    }
 
-        }
+    public static void main(String[] args) throws FileNotFoundException {
+
+        double winPercent = ((7614 * 1.0) / 15034) * 100;
+        System.out.println(winPercent);
     }
 }
+

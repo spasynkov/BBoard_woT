@@ -4,7 +4,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <%!
 //    https://stackoverflow.com/questions/826932/declaring-functions-in-jsp
-    public String doStylizeAd(String accId, String nickN, String cr_date, String text, String tags) {
+    public String doStylizeAd(String accId, String nickN, String cr_date, String text, String tags,String idAd) {
         return ("" +
                 "       <div class=\"b_ad\">\n" +
                 "            <div class=\"b_ad_right_side\">\n" +
@@ -19,7 +19,7 @@
                 "                    <p>" + cr_date + "</p>\n" +
                 "                </div>\n" +
                 "                <div class=\"b-button_right\">\n" +
-                "                    <span class=\"b-button-txt\">(!)Откликнуться</span>\n" +
+                "                   <button class = \"b-button_right_\" id = \""+idAd+"\" onclick=\"jsAdRespondAdd(this)\">(!)Откликнуться</button>\n" +
                 "                </div>\n" +
                 "            </div>\n" +
                 "        </div>\n"
@@ -100,23 +100,24 @@
                 <div class="b_ad_time_cr" style="float: right">
                     <p>$$$TIME_AGO</p>
                 </div>
-                <div class="b-button_right">
-                    <span id="respond" onclick = "doAction(this)"  class="b-button-txt">ОТКЛИК</span>
-                </div>
+                <%--<div class="b-button_right">--%>
+                    <%--<span id="30" onclick = "jsAdRespondAdd(this)"   class="b-button-txt">ОТКЛИК</span>--%>
+                <%--</div>--%>
+                <button class = "b-button_right_" id = "30" onclick="jsAdRespondAdd(this)">+Кнопка с рисунком</button>
             </div>
-
         </div>
 
                 <% if (request.getAttribute("AdActual") != null) {
                     ArrayList<String> adList = (ArrayList<String>) request.getAttribute("AdActual");
 //                    int inc = 0;
 //                    out.println("<tr>");
-                    for (int i = 0; i < adList.size(); i += 5) { //каждое 5ое - новое обьявление
+                    for (int i = 0; i < adList.size(); i += 6) { //каждое 5ое - новое обьявление
                         out.println(doStylizeAd(adList.get(i)
                                 , adList.get(i + 1)
                                 , adList.get(i + 2)
                                 , adList.get(i + 3)
                                 , adList.get(i + 4)
+                                , adList.get(i + 5)
                         ));
 //                        account_id,nickname,to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),text,tags
 //                        inc++;
