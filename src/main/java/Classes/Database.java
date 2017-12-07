@@ -110,13 +110,15 @@ public class Database {
         String sql = "" +
                 "select count(1) " +
                 "from bboard a1,responds a2 " +
-                "where a1.responds_arr = a2.collect_id " +
+                "where a1.id = a2.resp_ref " +
                 "and a1.id = " + adNum +
-                " and a2.user_id = " + accountId;// FIXME: 02.12.2017 При добавлении отклика в будущем надо учитывать актуальность объявы
+                " and a2.user_id = " + accountId;
+        // FIXME: 02.12.2017 При добавлении отклика в будущем надо учитывать актуальность объявы
         try {
             ResultSet rs = getConn()
                     .createStatement()
                     .executeQuery(sql);
+            rs.next();
             int cntResponds = rs.getInt(1);
             if (cntResponds == 0)
                 return false;
@@ -131,41 +133,40 @@ public class Database {
         if (alreadyResponded(adNum, accountId)) return;
 
         String sql =
-                "INSERT INTO responds(collect_id, username, user_id, battle_count, win_rate, own_rate)" +
+                "INSERT INTO responds(resp_ref, username, user_id, battle_count, win_rate, own_rate)" +
                         "VALUES (" + adNum + ",'" + username + "'," + accountId + "," + battleCnt + "," + winRate + "," + globalRate + ")";
 //        System.out.println("Sql: " + sql);
         getConn().createStatement().executeUpdate(sql);
+
     }
 
-//    public static void main(String[] args) throws SQLException {
-//
-//        String sql =
-//                "select to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),cr_date,now() " +
-//                        "from bboard " +
-//                        "order by cr_date";
-//
-//        ResultSet rs = getConn()
-//                .createStatement()
-//                .executeQuery(sql);
-//        while (rs.next()) {
-//            int rightNow = (int) System.currentTimeMillis();
-//            int dif_min = (int) (rightNow - rs.getTimestamp(2).getTime()) / 1000 / 60; //min
-////            System.out.println(new Date(dif_min).getTime());
-//            if (dif_min > 60) {
-//                int hh = (int) (dif_min / 60);
-//                dif_min = (dif_min % 60);
-//                System.out.println(hh + " hh " + dif_min + "min");
-//            } else {
-//                System.out.println(dif_min + " минут назад");
-//            }
-//
-//        }
-//    }
+    public static ArrayList<String> getRespondsList(int adId) throws SQLException {
+        ArrayList<String> result = new ArrayList<>();
+        String sql =
+                "select username,user_id,battle_count,win_rate,own_rate " +
+                        "from responds " +
+                        "where resp_ref = " +adId+
+                        "order by cr_date";
 
-    public static void main(String[] args) throws FileNotFoundException {
+        ResultSet rs = getConn()
+                .createStatement()
+                .executeQuery(sql);
+        while (rs.next()) {
+            result.add(rs.getString(1));
+            result.add(rs.getString(2));
+            result.add(rs.getString(3));
+            result.add(rs.getString(4));
+            result.add(rs.getString(5));
+        }
+        return result;
+    }
 
-        double winPercent = ((7614 * 1.0) / 15034) * 100;
-        System.out.println(winPercent);
+
+    public static void main(String[] args) throws FileNotFoundException, SQLException {
+
+        for (String s : getRespondsList(100047)) {
+            System.out.println(s);
+        }
     }
 }
 

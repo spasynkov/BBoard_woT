@@ -15,11 +15,15 @@ function jsAdRespondAdd(element) {
     // alert(element.id);
     // element.disabled;
     // }
+}
+function jsShowResponds(element) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "RespondsList", true);
+    // xhttp.open('GET', 'MakeAdRespond', false);
+    // xhttp.send();
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("AdId=" + element.id)
+    xhttp.responseText;
 
 
 }
-
-// alert('hello!');
-// document.getElementById("myButton").onclick = function () {
-// location.href = "www.yoursite.com";
-

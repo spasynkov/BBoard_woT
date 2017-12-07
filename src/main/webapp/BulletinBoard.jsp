@@ -3,8 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
 <%!
-//    https://stackoverflow.com/questions/826932/declaring-functions-in-jsp
-    public String doStylizeAd(String accId, String nickN, String cr_date, String text, String tags,String idAd) {
+    //    https://stackoverflow.com/questions/826932/declaring-functions-in-jsp
+    public String doStylizeAd(String accId, String nickN, String cr_date, String text, String tags, String idAd) {
         return ("" +
                 "       <div class=\"b_ad\">\n" +
                 "            <div class=\"b_ad_right_side\">\n" +
@@ -19,7 +19,7 @@
                 "                    <p>" + cr_date + "</p>\n" +
                 "                </div>\n" +
                 "                <div class=\"b-button_right\">\n" +
-                "                   <button class = \"b-button_right_\" id = \""+idAd+"\" onclick=\"jsAdRespondAdd(this)\">(!)Откликнуться</button>\n" +
+                "                   <button class = \"b-button_right_\" id = \"" + idAd + "\" onclick=\"jsAdRespondAdd(this)\">(!)Откликнуться</button>\n" +
                 "                </div>\n" +
                 "            </div>\n" +
                 "        </div>\n"
@@ -101,41 +101,58 @@
                     <p>$$$TIME_AGO</p>
                 </div>
                 <%--<div class="b-button_right">--%>
-                    <%--<span id="30" onclick = "jsAdRespondAdd(this)"   class="b-button-txt">ОТКЛИК</span>--%>
+                <%--<span id="30" onclick = "jsAdRespondAdd(this)"   class="b-button-txt">ОТКЛИК</span>--%>
                 <%--</div>--%>
-                <button class = "b-button_right_" id = "30" onclick="jsAdRespondAdd(this)">+Кнопка с рисунком</button>
+                <button class="b-button_right_" id="30" onclick="jsAdRespondAdd(this)">+Кнопка с рисунком</button>
+                <span class="real-show-hint"
+                      style="cursor: pointer;  border-bottom: dashed 1px;"
+                      onclick="jsShowResponds(this)"
+                      id="30">
+                    Отклики
+                </span>
             </div>
         </div>
 
-                <% if (request.getAttribute("AdActual") != null) {
-                    ArrayList<String> adList = (ArrayList<String>) request.getAttribute("AdActual");
+        <% if (request.getAttribute("AdActual") != null) {
+            ArrayList<String> adList = (ArrayList<String>) request.getAttribute("AdActual");
 //                    int inc = 0;
 //                    out.println("<tr>");
-                    for (int i = 0; i < adList.size(); i += 6) { //каждое 5ое - новое обьявление
-                        out.println(doStylizeAd(adList.get(i)
-                                , adList.get(i + 1)
-                                , adList.get(i + 2)
-                                , adList.get(i + 3)
-                                , adList.get(i + 4)
-                                , adList.get(i + 5)
-                        ));
+            for (int i = 0; i < adList.size(); i += 6) { //каждое 5ое - новое обьявление
+                out.println(doStylizeAd(
+                        adList.get(i)
+                        , adList.get(i + 1)
+                        , adList.get(i + 2)
+                        , adList.get(i + 3)
+                        , adList.get(i + 4)
+                        , adList.get(i + 5)
+                ));
 //                        account_id,nickname,to_char(cr_date,'dd/mm/yyyy hh24:mi:ss'),text,tags
 //                        inc++;
 //                        out.println("<td>" + adList.get(i) + "</td>");
 //                        if (inc % 4 == 0 && i != 0)
 //                            out.println("</tr><tr>");
-                    }
+            }
 //                    out.println("</tr>");
-                } else {
-                    out.println("Доска пока пуста...");
-                }
-                %>
+        } else {
+            out.println("Доска пока пуста...");
+        }
+        %>
 
         </table>
     </div>
 
-    <%--<a href="/logout">Выйти</a>--%>
+
 </h2>
+
+
 </body>
 <script type="text/javascript" src="JsFunctions.js"></script>
+<script
+<%--http://jquery.page2page.ru/index.php5/Подключение_jQuery--%>
+<%--src="http://code.jquery.com/jquery-3.2.1.js"--%>
+<%--integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="--%>
+<%--crossorigin="anonymous"></script>--%>
+        src="http://code.jquery.com/jquery-2.2.4.js"
+        type="text/javascript">
+</script>
 </html>

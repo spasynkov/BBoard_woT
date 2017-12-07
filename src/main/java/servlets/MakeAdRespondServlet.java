@@ -87,6 +87,7 @@ public class MakeAdRespondServlet extends HttpServlet {
             // FIXME: 03.12.2017 обрезать винрейт, и попробовать добавить отклик.
 
             try {
+                //винрейт округляестся базой при вставке отклика в таблицу
                 Database.addRespond(advertId, accountId, username, battlesCount, winPercent, globalRating);
             } catch (SQLException ex) {
                 System.out.println("Ошибка добавления отклика");
