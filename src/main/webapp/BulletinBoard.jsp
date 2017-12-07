@@ -146,7 +146,6 @@
 
 
 </body>
-<script type="text/javascript" src="JsFunctions.js"></script>
 <script
 <%--http://jquery.page2page.ru/index.php5/Подключение_jQuery--%>
 <%--src="http://code.jquery.com/jquery-3.2.1.js"--%>
@@ -155,4 +154,5 @@
         src="http://code.jquery.com/jquery-2.2.4.js"
         type="text/javascript">
 </script>
+<script type="text/javascript" src="JsFunctions.js"></script>
 </html>

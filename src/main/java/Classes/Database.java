@@ -161,12 +161,12 @@ public class Database {
         return result;
     }
 
+    public static void main(String[] args) {
 
-    public static void main(String[] args) throws FileNotFoundException, SQLException {
 
-        for (String s : getRespondsList(100047)) {
-            System.out.println(s);
-        }
+        Byte.valueOf("SleEpEe");
+
     }
+
 }
 

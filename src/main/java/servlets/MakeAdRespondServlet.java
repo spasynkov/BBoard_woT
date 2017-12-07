@@ -84,7 +84,6 @@ public class MakeAdRespondServlet extends HttpServlet {
             System.out.println("battlesCount: " + battlesCount);
             System.out.println("winsCount: " + winsCount);
             System.out.println("winPercent: " + winPercent);
-            // FIXME: 03.12.2017 обрезать винрейт, и попробовать добавить отклик.
 
             try {
                 //винрейт округляестся базой при вставке отклика в таблицу

@@ -23,7 +23,6 @@ function jsShowResponds(element) {
     // xhttp.send();
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("AdId=" + element.id)
-    xhttp.responseText;
-
+    console.log("Text_LOG:"+xhttp.responseText);
 
 }
