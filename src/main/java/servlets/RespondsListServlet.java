@@ -20,30 +20,24 @@ public class RespondsListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        super.doPost(req, resp);
 //        doGet(req,resp);
         System.out.println("RespondsList_POST");
         int advertId = Integer.parseInt(req.getParameter("AdId"));
-        System.out.println("advertId= " + advertId);
+        //исп.массив,чтобы не терялась ссылка на обьект.
+        final Integer []columnsCount = {0};
         try {
-            ArrayList<String> responds = Database.getRespondsList(advertId);
+            ArrayList<String> responds = Database.getRespondsList(advertId,columnsCount);
             PrintWriter outStream = resp.getWriter();
-            resp.setContentType("text/html"); // FIXME: 07.12.2017 уходит но не приходит...
-            System.out.println(responds.toString());
-            outStream.write(responds.toString());
-
+            resp.setContentType("text/html");
+            outStream.write(responds.toString().replaceAll("[\\[\\]]",""));
 
             outStream.flush();
             outStream.close();
-            System.out.println("SUCCESS!");
         } catch (SQLException e) {
             System.out.println("Ошибка получения списка откликов. Объявление ID=" + advertId);
             e.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 
@@ -51,7 +45,7 @@ public class RespondsListServlet extends HttpServlet {
                          HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("RespondsList_GET");
-        doPost(request, response);
+//        doPost(request, response);
 
 //        String userName = request.getParameter("userName").trim();
 //        if(userName == null || "".equals(userName))

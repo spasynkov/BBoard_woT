@@ -140,7 +140,7 @@ public class Database {
 
     }
 
-    public static ArrayList<String> getRespondsList(int adId) throws SQLException {
+    public static ArrayList<String> getRespondsList(int adId,Integer [] colsCnt) throws SQLException {
         ArrayList<String> result = new ArrayList<>();
         String sql =
                 "select username,user_id,battle_count,win_rate,own_rate " +
@@ -151,6 +151,7 @@ public class Database {
         ResultSet rs = getConn()
                 .createStatement()
                 .executeQuery(sql);
+        colsCnt[0] = rs.getMetaData().getColumnCount(); //чтобы сохранить значение для вызываемой функции
         while (rs.next()) {
             result.add(rs.getString(1));
             result.add(rs.getString(2));

@@ -12,6 +12,8 @@ body {
     width: 100%;
 }
 
+/*--------------------------------------------------------------------------------*/
+
 .b-header {
     height: 151px;
     background: url("css/BulletinBoard_header.jpg") no-repeat 50% 0;

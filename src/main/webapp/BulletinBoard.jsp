@@ -110,7 +110,8 @@
                       id="30">
                     Отклики
                 </span>
-            </div>
+                <span class="real-show-hint" data-hint="#real-hint-1" >Ссылка на подсказку 1</span>
+                <span class="real-show-hint" data-hint="#real-hint-2" >Ссылка на подсказку 2</span>            </div>
         </div>
 
         <% if (request.getAttribute("AdActual") != null) {
@@ -144,15 +145,24 @@
 
 </h2>
 
+<div id="real-hint-1" class="real-hint">
+    <div class="prm-cross"></div>
+    <span class="hint-caption">Подсказка 1.</span><br/>
+    Вы нажали на первую ссылку
+</div>
+
+<div id="real-hint-2" class="real-hint">
+    <div class="prm-cross"></div>
+    <span class="hint-caption">Подсказка 2.</span><br/>
+    Вы нажали на вторую ссылку
+</div>
+
 
 </body>
 <script
 <%--http://jquery.page2page.ru/index.php5/Подключение_jQuery--%>
-<%--src="http://code.jquery.com/jquery-3.2.1.js"--%>
-<%--integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="--%>
-<%--crossorigin="anonymous"></script>--%>
-        src="http://code.jquery.com/jquery-2.2.4.js"
-        type="text/javascript">
-</script>
+src="http://code.jquery.com/jquery-3.2.1.js"
+integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+crossorigin="anonymous"></script>
 <script type="text/javascript" src="JsFunctions.js"></script>
 </html>
