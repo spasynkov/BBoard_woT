@@ -110,8 +110,12 @@
                       id="30">
                     Отклики
                 </span>
-                <span class="real-show-hint" data-hint="#real-hint-1" >Ссылка на подсказку 1</span>
-                <span class="real-show-hint" data-hint="#real-hint-2" >Ссылка на подсказку 2</span>            </div>
+            </div>
+        </div>
+
+        <div class="b_ad">
+            <a href="#" class="spoiler-trigger"><span>Развернуть спойлер</span></a>
+            <div class="spoiler-block">Скрытый контент спойлера</div>
         </div>
 
         <% if (request.getAttribute("AdActual") != null) {
@@ -161,8 +165,8 @@
 </body>
 <script
 <%--http://jquery.page2page.ru/index.php5/Подключение_jQuery--%>
-src="http://code.jquery.com/jquery-3.2.1.js"
-integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-crossorigin="anonymous"></script>
+        src="http://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
 <script type="text/javascript" src="JsFunctions.js"></script>
 </html>

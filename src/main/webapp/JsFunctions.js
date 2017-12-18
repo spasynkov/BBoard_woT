@@ -28,21 +28,21 @@ function jsShowResponds(element) {
         if (xhttp.status != 200) {
             alert(xhttp.status + ': ' + xhttp.statusText);
         } else {
-            alert(xhttp.responseText);
+            // alert(xhttp.responseText);
             var respTxt = xhttp.responseText.split(", ");
 
-            var respTable ;
+            var respTable;
             for (i = 0; i < respTxt.length; i += 5) {
                 respTable = "<tr>"
-                    + "<td>" + respTxt[i] + "<td>"
-                    + "<td>" + respTxt[i + 1] + "<td>"
-                    + "<td>" + respTxt[i + 2] + "<td>"
-                    + "<td>" + respTxt[i + 3] + "<td>"
-                    + "<td>" + respTxt[i + 4] + "<td>"
+                    + "<td>" + respTxt[i] + "</td>"
+                    + "<td>" + respTxt[i + 1] + "</td>"
+                    + "<td>" + respTxt[i + 2] + "</td>"
+                    + "<td>" + respTxt[i + 3] + "</td>"
+                    + "<td>" + respTxt[i + 4] + "</td>"
                     + "</tr>";
             }
             respTable = "<table>"
-                +"<tr>"
+                + "<tr>"
                 + "<th>username</th>"
                 + "<th>user_id</th>"
                 + "<th>battle_count</th>"
@@ -52,6 +52,15 @@ function jsShowResponds(element) {
                 + respTable
                 + "</table>";
             console.log(respTable);
+            // var popup = open("", "Popup", "width=300,height=200");
+            // var tblOk = popup.document.createElement("Table");
+            // tblOk.innerHTML = respTable;
+            // var aOk = popup.document.createElement("a");
+            // aOk.innerHTML = "Click here";
+            //
+            // popup.document.body.appendChild(tblOk);
+            // popup.document.body.appendChild(aOk);
+            // window.document.getElementById(30)
         }
     }
     // alert("status"+xhttp.status);
@@ -59,27 +68,15 @@ function jsShowResponds(element) {
     // alert("readyState"+xhttp.readyState);
 }
 
-$(function () {
-    $('.real-show-hint').on("click", function (e) {
-        e = e || window.event;
-        e.preventDefault();
-        var ypos = $(this).offset().top + 24;
-        var xpos = $(this).offset().left;
-        var RealHint = $(this).data('hint');
-        $(RealHint).css('top', ypos);
-        $(RealHint).css('left', xpos);
-        $(RealHint).toggle('fast');
-        return;
-    });
+$(document).on('click', '.spoiler-trigger', function (e) {
+    e.preventDefault();
+    $(this).toggleClass('active');
+    // $(this).parent().find('.spoiler-block').first().slideToggle(300);
+    $(this)
+        .parent()
+        .find('.spoiler-block')
+        .html("SomeText")
+        .slideToggle(300);
 
-    $('.prm-cross').on('click', function () {
-        $(this).parent().hide('fast');
-        return false;
-    });
-
-    document.onclick = function (e) {
-        if ($(e.target).hasClass('real-hint') == false)
-            $('.real-hint').hide('fast');
-        return;
-    }
+    console.log("DEBUG: "+this.parent());
 });
